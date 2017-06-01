@@ -1,0 +1,19 @@
+language: go
+go:
+- 1.8.x
+install: true
+script:
+- go build -ldflags="-s" -o HoP-$TRAVIS_TAG.linux-amd64 github.com/Tri125/HoP
+- GOOS=windows GOARCH=amd64 go build -ldflags="-s" -o HoP-$TRAVIS_TAG.windows-amd64.exe github.com/Tri125/HoP
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: up69+Nu+qseeQfxBEx0Mc+wDohr7UrAr5uUPdjpdLQDUu0Yavn/kP5XAnxhFgI8tbp63GCGdeimyzypmpnqJbGBMm39P3KipuRRZL63FEU2PH122uTY60kjg8mfjcMB1vx2kUl+EoKtYhOtfoNY2dFBYbmiPXogCn2fYFa0YX0rSC/x7acAL+nSAbcSFpZnfhV3N94A8DUE5IC1bA3pEUOA4W+4cOnSN10dIof1Ot5BlrIZ4LZa6dlySLPa1yt8aMssJLMADJ5hxKndV/rK0tFqRNDtLCt/vtyfi5qJ+RXvHbGmB8C94oeMvCqS2bnDFFkXm7SpqpLJ1r8ifBoyzZ/rcVGw218XqKCu0Cj8tKXu7P8YPf4ZriWYoPy8ysSivTtYbSr79K+27kNip4WauDylRCr/1lKT9Q2YWIBGj7A8Uk82J5ilgU2EpJar6SrGJcMV2jQjeEC+d0yHtxUrjzHeXlB4jykn66UFeiCnzNlCwmsFQK2k3qEO+RkGlC5DCBpZJ50NvSBL7sdNCVswZ2YXMNXOISMjbsY7s67XFCyG0MDhKkV1S8A8IuSH89XUP2QGBBbfclvwXpFVF5gNdl2CJQYZVPIJPGo6tTmsuoGDdbBhYeCsLR4tSzWq0rOqy2xd03W5th3me0Eg15d7bXTz7X9+Q3DGIRKg+e4kx4H0=
+  file: 
+  - HoP-$TRAVIS_TAG.linux-amd64
+  - HoP-$TRAVIS_TAG.windows-amd64.exe
+  on:
+    name: HoP $TRAVIS_TAG
+    repo: Tri125/HoP
+    tags: true
