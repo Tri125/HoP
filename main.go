@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
@@ -12,13 +13,43 @@ import (
 
 // Variables used for command line parameters
 var (
-	Token string
+	Token       string
+	BotCommands []BotCommand
 )
+
+type BotCommandType uint8
+
+const (
+	GRANT BotCommandType = iota + 1
+	REMOVE
+	HOP
+	JOBS
+)
+
+type BotCommand struct {
+	description string
+	commandType BotCommandType
+	userCommand string
+}
+
+func (c BotCommand) String() string {
+	return c.description
+}
 
 func init() {
 
 	flag.StringVar(&Token, "t", "", "Bot Token")
 	flag.Parse()
+	BotCommands = make([]BotCommand, 4)
+
+	grant := BotCommand{description: "Grant access to the requested role.", commandType: GRANT, userCommand: "!grant"}
+	remove := BotCommand{description: "Remove access to the requested role.", commandType: REMOVE, userCommand: "!remove"}
+	hoP := BotCommand{description: "List available commands.", commandType: HOP, userCommand: "!HoP"}
+	jobs := BotCommand{description: "List available roles.", commandType: JOBS, userCommand: "!jobs"}
+	BotCommands[0] = grant
+	BotCommands[1] = remove
+	BotCommands[2] = hoP
+	BotCommands[3] = jobs
 }
 
 func main() {
@@ -73,6 +104,10 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	if m.Content == "!grant Captain Access" {
 		s.ChannelMessageSend(m.ChannelID, "Go home, Clown.")
+	} else if m.Content == "!HoP" {
+		hoP(s, m.Author)
+	} else if m.Content == "!jobs" {
+		jobs(s, g, c, m.Author)
 	} else if strings.HasPrefix(m.Content, "!grant") {
 		roleRequest := strings.TrimPrefix(m.Content, "!grant")
 		roleRequest = strings.TrimSpace((roleRequest))
@@ -95,7 +130,7 @@ func grantRole(s *discordgo.Session, g *discordgo.Guild, c *discordgo.Channel, u
 				fmt.Println("Role Grant failed: ", err)
 				return
 			}
-			s.ChannelMessageSend(c.ID, roleName+" clearance granted to "+u.Mention()+". Have a nice day!")
+			s.ChannelMessageSend(c.ID, roleName+" clearance granted to "+u.Mention()+".\n Have a nice day!")
 		}
 	}
 }
@@ -111,4 +146,53 @@ func removeRole(s *discordgo.Session, g *discordgo.Guild, c *discordgo.Channel, 
 			s.ChannelMessageSend(c.ID, roleName+" clearance removed from "+u.Mention()+".")
 		}
 	}
+}
+
+func hoP(s *discordgo.Session, u *discordgo.User) {
+	if len(BotCommands) == 0 {
+		return
+	}
+	var buffer bytes.Buffer
+	for _, command := range BotCommands {
+		buffer.WriteString("`")
+		buffer.WriteString(command.userCommand)
+		buffer.WriteString("` : ")
+		buffer.WriteString(command.description)
+		buffer.WriteString("\n\n")
+	}
+	c, err := s.UserChannelCreate(u.ID)
+	if err != nil {
+		return
+	}
+	s.ChannelMessageSend(c.ID, buffer.String())
+}
+
+func jobs(s *discordgo.Session, g *discordgo.Guild, c *discordgo.Channel, u *discordgo.User) {
+	member, err := s.State.Member(g.ID, s.State.User.ID)
+	if err != nil {
+		fmt.Println("Couldn't get guild member: ", err)
+		return
+	}
+	if len(g.Roles) == 0 || len(member.Roles) == 0 {
+		return
+	}
+	var highestRolePosition int
+	for _, roleID := range member.Roles {
+		for _, role := range g.Roles {
+			if roleID == role.ID {
+				if highestRolePosition < role.Position {
+					highestRolePosition = role.Position
+				}
+			}
+		}
+	}
+	var buffer bytes.Buffer
+	buffer.WriteString("Here are the available jobs:\n\n")
+	for _, role := range g.Roles {
+		if role.Position > 0 && role.Position < highestRolePosition {
+			buffer.WriteString(role.Name)
+			buffer.WriteString("\n")
+		}
+	}
+	s.ChannelMessageSend(c.ID, buffer.String())
 }
