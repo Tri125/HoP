@@ -11,6 +11,11 @@ import (
 	"syscall"
 )
 
+/*
+Set this variable with go build with the -ldflags="-X main.version=<value>" parameter.
+*/
+var version = "undefined"
+
 // Variables used for command line parameters
 var (
 	Token       string
@@ -38,8 +43,15 @@ func (c BotCommand) String() string {
 
 func init() {
 
+	versionFlag := flag.Bool("v", false, "Prints current version")
 	flag.StringVar(&Token, "t", "", "Bot Token")
 	flag.Parse()
+
+	if *versionFlag {
+		fmt.Println(version)
+		os.Exit(0)
+	}
+
 	BotCommands = make([]BotCommand, 4)
 
 	grant := BotCommand{description: "Grant access to the requested role.", commandType: GRANT, userCommand: "!grant"}
