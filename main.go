@@ -7,6 +7,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"os"
 	"os/signal"
+	"sort"
 	"strings"
 	"syscall"
 )
@@ -54,8 +55,8 @@ func init() {
 
 	BotCommands = make([]BotCommand, 4)
 
-	grant := BotCommand{description: "Grant access to the requested role.", commandType: GRANT, userCommand: "!grant"}
-	remove := BotCommand{description: "Remove access to the requested role.", commandType: REMOVE, userCommand: "!remove"}
+	grant := BotCommand{description: "Grant access to the requested role. You can separate multiple roles by a semicolon.", commandType: GRANT, userCommand: "!grant"}
+	remove := BotCommand{description: "Remove access to the requested role. You can separate multiple roles by a semicolon.", commandType: REMOVE, userCommand: "!remove"}
 	hoP := BotCommand{description: "List available commands.", commandType: HOP, userCommand: "!HoP"}
 	jobs := BotCommand{description: "List available roles.", commandType: JOBS, userCommand: "!jobs"}
 	BotCommands[0] = grant
@@ -135,28 +136,42 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 func grantRole(s *discordgo.Session, g *discordgo.Guild, c *discordgo.Channel, u *discordgo.User, roleName string) {
+	splitRoles := strings.Split(roleName, ";")
+	sort.Strings(splitRoles)
+	var granted bool
 	for _, role := range g.Roles {
-		if role.Name == roleName {
+		i := sort.SearchStrings(splitRoles, role.Name)
+		if i < len(splitRoles) && splitRoles[i] == role.Name {
 			err := s.GuildMemberRoleAdd(g.ID, u.ID, role.ID)
 			if err != nil {
 				fmt.Println("Role Grant failed: ", err)
 				return
 			}
-			s.ChannelMessageSend(c.ID, roleName+" clearance granted to "+u.Mention()+".\n Have a nice day!")
+			granted = true
 		}
+	}
+	if granted {
+		s.ChannelMessageSend(c.ID, strings.Join(splitRoles, " ")+" clearance granted to "+u.Mention()+".\n Have a nice day!")
 	}
 }
 
 func removeRole(s *discordgo.Session, g *discordgo.Guild, c *discordgo.Channel, u *discordgo.User, roleName string) {
+	splitRoles := strings.Split(roleName, ";")
+	sort.Strings(splitRoles)
+	var granted bool
 	for _, role := range g.Roles {
-		if role.Name == roleName {
+		i := sort.SearchStrings(splitRoles, role.Name)
+		if i < len(splitRoles) && splitRoles[i] == role.Name {
 			err := s.GuildMemberRoleRemove(g.ID, u.ID, role.ID)
 			if err != nil {
 				fmt.Println("Role Removal failed: ", err)
 				return
 			}
-			s.ChannelMessageSend(c.ID, roleName+" clearance removed from "+u.Mention()+".")
+			granted = true
 		}
+	}
+	if granted {
+		s.ChannelMessageSend(c.ID, strings.Join(splitRoles, " ")+" clearance removed from "+u.Mention()+".")
 	}
 }
 
@@ -202,8 +217,9 @@ func jobs(s *discordgo.Session, g *discordgo.Guild, c *discordgo.Channel, u *dis
 	buffer.WriteString("Here are the available jobs:\n\n")
 	for _, role := range g.Roles {
 		if role.Position > 0 && role.Position < highestRolePosition {
+			buffer.WriteString("``")
 			buffer.WriteString(role.Name)
-			buffer.WriteString("\n")
+			buffer.WriteString("``\n")
 		}
 	}
 	s.ChannelMessageSend(c.ID, buffer.String())
