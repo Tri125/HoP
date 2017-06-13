@@ -15,6 +15,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/paulbellamy/ratecounter"
+  packages = ["."]
+  revision = "66b206d2a2d00245e34b1494fcaeef5e99041ea7"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/crypto"
   packages = ["nacl/secretbox","poly1305","salsa20/salsa"]
   revision = "351dc6a5bf92a5f2ae22fadeee08eb6a45aa2d93"
@@ -22,6 +28,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d8b2ae87d6b46ed5a0b43c6f0840c4ef248abc4e941e31f4b6f58faad44c7be9"
+  inputs-digest = "67e870c48499dfaff3a2cea8a0953480e55d156d6410895be61cc6975d8f6bfb"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -69,3 +69,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/bwmarrin/discordgo"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/paulbellamy/ratecounter"
