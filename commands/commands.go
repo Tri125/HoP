@@ -3,7 +3,7 @@ package commands
 import (
 	"bytes"
 	"github.com/bwmarrin/discordgo"
-	"github.com/tri125/HoP/metrics"
+	"github.com/Tri125/HoP/metrics"
 	"log"
 	"sort"
 	"strings"
