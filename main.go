@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"github.com/Tri125/HoP/commands"
 	"github.com/Tri125/HoP/metrics"
+	"github.com/bwmarrin/discordgo"
 	"log"
 	"os"
 	"os/signal"

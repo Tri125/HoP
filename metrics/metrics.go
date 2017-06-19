@@ -36,10 +36,10 @@ func Close() {
 }
 
 func SetServer() {
+	http.Handle("/metrics", expvar.Handler())
 	srv = &http.Server{Addr: ":8080", Handler: expvar.Handler()}
-
 	go func() {
-		if err := http.ListenAndServe(":8080", http.DefaultServeMux); err != nil {
+		if err := srv.ListenAndServe(); err != nil {
 			ErrorEncountered.Add(1)
 			log.Fatal(err)
 		}
