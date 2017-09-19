@@ -2,32 +2,32 @@
 
 
 [[projects]]
-  branch = "master"
   name = "github.com/bwmarrin/discordgo"
   packages = ["."]
-  revision = "0993a94b4e1c3291bed2047f583f34792269355c"
+  revision = "2fda7ce223a66a5b70b66987c22c3c94d022ee66"
+  version = "v0.17.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/gorilla/websocket"
   packages = ["."]
-  revision = "a91eba7f97777409bc2c443f5534d41dd20c5720"
+  revision = "ea4d1f681babbce9545c9c5f3d5194a789c89f5b"
+  version = "v1.2.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/paulbellamy/ratecounter"
   packages = ["."]
-  revision = "66b206d2a2d00245e34b1494fcaeef5e99041ea7"
+  revision = "524851a93235ac051e3540563ed7909357fe24ab"
+  version = "v0.2.0"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["nacl/secretbox","poly1305","salsa20/salsa"]
-  revision = "351dc6a5bf92a5f2ae22fadeee08eb6a45aa2d93"
+  revision = "7d9177d70076375b9a59c8fde23d52d9c4a7ecd5"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "67e870c48499dfaff3a2cea8a0953480e55d156d6410895be61cc6975d8f6bfb"
+  inputs-digest = "791f65ffd725d4c9ec07a4eb00fa624c81dfd89b027411d86a616c766b6c02c4"
   solver-name = "gps-cdcl"
   solver-version = 1
