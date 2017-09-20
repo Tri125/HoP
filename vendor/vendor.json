@@ -1,0 +1,7 @@
+{
+    "comment": "HoP discord bot",
+    "rootPath": "github.com/Tri125/HoP",
+    "heroku": {
+        "sync": false
+    }
+}

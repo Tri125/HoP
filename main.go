@@ -35,7 +35,6 @@ func init() {
 }
 
 func main() {
-	//metrics.SetServer()
 	if Token == "" {
 		var present bool
 		Token, present = os.LookupEnv("HOP_TOKEN")
@@ -50,6 +49,20 @@ func main() {
 		return
 	}
 
+	//metrics.SetServer()
+	/*
+		port := os.Getenv("PORT")
+		if port == "" {
+			port = "8080"
+		}
+		http.Handle("/metrics", expvar.Handler())
+		srv := &http.Server{Addr: ":" + port, Handler: nil}
+		go func() {
+			if err := srv.ListenAndServe(); err != nil {
+				log.Fatal(err)
+			}
+		}()
+	*/
 	// Register the messageCreate func as a callback for MessageCreate events.
 	dg.AddHandler(messageCreate)
 	dg.AddHandler(guildJoin)
