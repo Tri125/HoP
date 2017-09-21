@@ -1,1 +1,1 @@
-worker: HoP
+web: HoP
