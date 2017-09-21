@@ -1,12 +1,14 @@
 package main
 
 import (
+	"expvar"
 	"flag"
 	"fmt"
 	"github.com/Tri125/HoP/commands"
 	"github.com/Tri125/HoP/metrics"
 	"github.com/bwmarrin/discordgo"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -50,19 +52,18 @@ func main() {
 	}
 
 	//metrics.SetServer()
-	/*
-		port := os.Getenv("PORT")
-		if port == "" {
-			port = "8080"
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	http.Handle("/metrics", expvar.Handler())
+	srv := &http.Server{Addr: ":" + port, Handler: nil}
+	go func() {
+		if err := srv.ListenAndServe(); err != nil {
+			log.Fatal(err)
 		}
-		http.Handle("/metrics", expvar.Handler())
-		srv := &http.Server{Addr: ":" + port, Handler: nil}
-		go func() {
-			if err := srv.ListenAndServe(); err != nil {
-				log.Fatal(err)
-			}
-		}()
-	*/
+	}()
 	// Register the messageCreate func as a callback for MessageCreate events.
 	dg.AddHandler(messageCreate)
 	dg.AddHandler(guildJoin)
