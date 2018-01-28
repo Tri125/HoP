@@ -1,0 +1,9 @@
+{
+    "name": "HoP",
+    "description": "HoP - Head of Personnel is a Discord bot helping you manage roles",
+    "repository": "https://github.com/Tri125/HoP",
+    "keywords": ["go", "discord", "bot", "role"],
+    "env": {
+        "GO_LINKER_SYMBOL": "main.version"
+    }
+}

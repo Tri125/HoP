@@ -1,6 +1,6 @@
 language: go
 go:
-- 1.8.x
+- 1.9.x
 install: true
 script:
 - go build -ldflags="-s -X main.version=$TRAVIS_TAG" -o HoP-$TRAVIS_TAG.linux-amd64 github.com/Tri125/HoP
