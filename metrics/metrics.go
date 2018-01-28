@@ -3,10 +3,11 @@ package metrics
 import (
 	"context"
 	"expvar"
-	"github.com/paulbellamy/ratecounter"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/paulbellamy/ratecounter"
 )
 
 var (
@@ -30,7 +31,8 @@ func init() {
 
 func Close() {
 	if srv != nil {
-		ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
 		srv.Shutdown(ctx)
 	}
 }

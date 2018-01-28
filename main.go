@@ -4,14 +4,15 @@ import (
 	"expvar"
 	"flag"
 	"fmt"
-	"github.com/Tri125/HoP/commands"
-	"github.com/Tri125/HoP/metrics"
-	"github.com/bwmarrin/discordgo"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/Tri125/HoP/commands"
+	"github.com/Tri125/HoP/metrics"
+	"github.com/bwmarrin/discordgo"
 )
 
 /*
