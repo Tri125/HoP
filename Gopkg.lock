@@ -4,8 +4,8 @@
 [[projects]]
   name = "github.com/bwmarrin/discordgo"
   packages = ["."]
-  revision = "2fda7ce223a66a5b70b66987c22c3c94d022ee66"
-  version = "v0.17.0"
+  revision = "4a33b9bc7c56cfdb9bb244e33e83cb3941fe2bdc"
+  version = "v0.18.0"
 
 [[projects]]
   name = "github.com/gorilla/websocket"
@@ -22,12 +22,16 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["nacl/secretbox","poly1305","salsa20/salsa"]
+  packages = [
+    "nacl/secretbox",
+    "poly1305",
+    "salsa20/salsa"
+  ]
   revision = "7d9177d70076375b9a59c8fde23d52d9c4a7ecd5"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "791f65ffd725d4c9ec07a4eb00fa624c81dfd89b027411d86a616c766b6c02c4"
+  inputs-digest = "0a114ea27bcdcadead322499d1fe72fbf17dbe5822619d9904ed40cc73004a41"
   solver-name = "gps-cdcl"
   solver-version = 1

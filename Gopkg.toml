@@ -23,8 +23,12 @@
 
 [[constraint]]
   name = "github.com/bwmarrin/discordgo"
-  version = "0.17.0"
+  version = "0.18.0"
 
 [[constraint]]
   name = "github.com/paulbellamy/ratecounter"
   version = "0.2.0"
+
+[metadata.heroku]
+  root-package = "github.com/Tri125/HoP"
+  ensure = "true"
