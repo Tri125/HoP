@@ -17,10 +17,12 @@ FROM scratch
 
 # Copy Binary From Builder
 COPY --from=builder /go/src/github.com/Tri125/HoP/HoP /app/
-WORKDIR /app
 
 # Copy In Certificates
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+
+# Set Working Directory
+WORKDIR /app
 
 # Entrypoint/CMD
 CMD ["./HoP"]
